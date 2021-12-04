@@ -40,8 +40,6 @@ class MNN(gnn.summation_mpnn.SummationMPNN):
             graph_emb_size=self.constants.hidden_node_features,
             mlp1_hidden_dim=self.constants.mlp1_hidden_dim,
             mlp1_depth=self.constants.mlp1_depth,
-            mlp1_dropout_p=self.constants.mlp1_dropout_p,
-            mlp2_hidden_dim=self.constants.mlp2_hidden_dim,
             mlp2_depth=self.constants.mlp2_depth,
             mlp2_dropout_p=self.constants.mlp2_dropout_p,
             f_add_elems=self.constants.len_f_add_per_node,

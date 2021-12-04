@@ -33,14 +33,7 @@ def get_feature_vector_indices() -> list:
           `MolecularGraph`s. These segments are, in order, atom type, formal
           charge, number of implicit Hs, and chirality.
     """
-    idc = [constants.n_atom_types, constants.n_formal_charge]
-
-    # indices corresponding to implicit H's and chirality are optional (below)
-    if not constants.use_explicit_H and not constants.ignore_H:
-        idc.append(constants.n_imp_H)
-
-    if constants.use_chirality:
-        idc.append(constants.n_chirality)
+    idc = [6,3]
 
     return np.cumsum(idc).tolist()
 

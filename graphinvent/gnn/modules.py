@@ -109,32 +109,18 @@ class Set2Vec(torch.nn.Module):
 
 
 class MLP(torch.nn.Module):
-    """
-    Multi-layer perceptron. Applies SELU after every linear layer.
-
-    Args:
-    ----
-        in_features (int)         : Size of each input sample.
-        hidden_layer_sizes (list) : Hidden layer sizes.
-        out_features (int)        : Size of each output sample.
-        dropout_p (float)         : Probability of dropping a weight.
-    """
-
     def __init__(self, in_features : int, hidden_layer_sizes : list, out_features : int,
                  dropout_p : float) -> None:
         super().__init__()
 
         activation_function = torch.nn.SELU
-
         # create list of all layer feature sizes
         fs = [in_features, *hidden_layer_sizes, out_features]
-
         # create list of linear_blocks
         layers = [self._linear_block(in_f, out_f,
                                      activation_function,
                                      dropout_p)
                   for in_f, out_f in zip(fs, fs[1:])]
-
         # concatenate modules in all sequentials in layers list
         layers = [module for sq in layers for module in sq.children()]
 
@@ -143,30 +129,13 @@ class MLP(torch.nn.Module):
 
     def _linear_block(self, in_f : int, out_f : int, activation : torch.nn.Module,
                       dropout_p : float) -> torch.nn.Sequential:
-        """
-        Returns a linear block consisting of a linear layer, an activation function
-        (SELU), and dropout (optional) stack.
-
-        Args:
-        ----
-            in_f (int)                   : Size of each input sample.
-            out_f (int)                  : Size of each output sample.
-            activation (torch.nn.Module) : Activation function.
-            dropout_p (float)            : Probability of dropping a weight.
-
-        Returns:
-        -------
-            torch.nn.Sequential : The linear block.
-        """
+        
         # bias must be used in most MLPs in our models to learn from empty graphs
         linear = torch.nn.Linear(in_f, out_f, bias=True)
         torch.nn.init.xavier_uniform_(linear.weight)
         return torch.nn.Sequential(linear, activation(), torch.nn.AlphaDropout(dropout_p))
 
     def forward(self, layers_input : torch.nn.Sequential) -> torch.nn.Sequential:
-        """
-        Defines forward pass.
-        """
         return self.seq(layers_input)
 
 

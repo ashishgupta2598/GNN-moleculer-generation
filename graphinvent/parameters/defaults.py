@@ -236,7 +236,7 @@ elif parameters["model"] == "AttS2V":
         "enn_dropout_p"        : 0.0,
         "enn_hidden_dim"       : 250,
         "mlp1_depth"           : 4,
-        "mlp1_dropout_p"       : 0.0,
+        "mlp1_dropout_p"       : 0.0,#enn_hidden_dim
         "mlp1_hidden_dim"      : 500,
         "mlp2_depth"           : 4,
         "mlp2_dropout_p"       : 0.0,
