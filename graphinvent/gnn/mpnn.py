@@ -5,7 +5,6 @@ Defines specific MPNN implementations.
 from collections import namedtuple
 import math
 import torch
-
 # load GraphINVENT-specific functions
 import gnn.aggregation_mpnn
 import gnn.edge_mpnn
@@ -19,14 +18,14 @@ class MNN(gnn.summation_mpnn.SummationMPNN):
     """
     def __init__(self, constants : namedtuple) -> None:
         super().__init__(constants)
-
+1
         self.constants       = constants
         message_weights      = torch.Tensor(self.constants.message_size,
                                             self.constants.hidden_node_features,
                                             self.constants.n_edge_features)
         if self.constants.device == "cuda":
             message_weights = message_weights.to("cuda", non_blocking=True)
-
+1
         self.message_weights = torch.nn.Parameter(message_weights)
 
         self.gru             = torch.nn.GRUCell(
@@ -40,6 +39,8 @@ class MNN(gnn.summation_mpnn.SummationMPNN):
             graph_emb_size=self.constants.hidden_node_features,
             mlp1_hidden_dim=self.constants.mlp1_hidden_dim,
             mlp1_depth=self.constants.mlp1_depth,
+            mlp1_dropout_p=self.constants.mlp1_dropout_p,
+            mlp2_hidden_dim=self.constants.mlp2_hidden_dim,
             mlp2_depth=self.constants.mlp2_depth,
             mlp2_dropout_p=self.constants.mlp2_dropout_p,
             f_add_elems=self.constants.len_f_add_per_node,

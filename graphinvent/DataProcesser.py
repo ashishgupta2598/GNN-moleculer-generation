@@ -119,7 +119,7 @@ class DataProcesser:
     def restart_preprocessing_job(self) -> None:
         """
         Restarts a preprocessing job. Uses an index specified in the dataset
-        directory to know whexre to resume preprocessing.
+        directory to know where to resume preprocessing.
         """
         try:
             self.resume_idx, self.dataset_size = util.read_last_molecule_idx(

@@ -141,7 +141,7 @@ class SummationMPNN(torch.nn.Module):
             messages = torch.matmul(message_summation_matrix, message_terms)
 
             node_batch_nodes = self.update(node_batch_nodes, messages)
-            hidden_nodes[node_batch_batch_idc, node_batch_node_idc, :] = node_batch_nodes.clone()
+            hidden_nodes[node_batch_batch_idc, node_batch_node_idc, :] = node_batch_nodes.clone() #updated the hidden states
 
         node_mask = adjacency.sum(-1) != 0
         output    = self.readout(hidden_nodes, nodes, node_mask)
