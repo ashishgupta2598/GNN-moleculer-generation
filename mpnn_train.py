@@ -229,3 +229,59 @@ constants = dotdict(hyperparameters)
 
 network = MNN(constants)
 print(network)
+
+
+"""
+class GlobalReadout(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.mlp1 = MLP(in_features=constants.message_size,
+                  hidden_layer_sizes=[constants.mlp1_hidden_dim]*constants.mlp1_depth,
+                  out_features=constants.message_size,
+                  dropout_p=0.0)
+        self.mlp2 = MLP(in_features=constants.message_size,
+                  hidden_layer_sizes=[constants.mlp2_hidden_dim]*constants.mlp2_depth,
+                  out_features=constants.message_size,
+                  dropout_p=0.0)
+        
+        self.mlp3 = MLP(in_features=constants.message_size,
+                  hidden_layer_sizes=[constants.mlp1_hidden_dim]*constants.mlp1_depth,
+                  out_features=13*6*3*1*4,
+                  dropout_p=0.0)
+        self.mlp4 = MLP(in_features=constants.message_size,
+                  hidden_layer_sizes=[constants.mlp2_hidden_dim]*constants.mlp2_depth,
+                  out_features=13*4,
+                  dropout_p=0.0)
+        self.mlpt = MLP(in_features=constants.message_size,
+                  hidden_layer_sizes=[constants.mlp1_hidden_dim]*constants.mlp1_depth,
+                  out_features=1,
+                  dropout_p=0.0)
+        # self.final_l = MLP(in_features=2900,#23*100 #(14+14+1)100
+        #           hidden_layer_sizes=[500]*1,
+        #           out_features=989,
+        #           dropout_p=0.0)
+          
+    def forward(self,features):
+        g= torch.sum(features,dim=1)
+        g = g.view(1,1,100)
+         #g = torch.broadcast_to(g, (1,10, 100))
+        #print("api is ",g.shape)
+        print("feat are ",features.shape)
+        fadd1 = self.mlp1(features)
+        fconn1 = self.mlp2(features)  
+
+        #print("dims fadd ip",fconn1.shape,g.shape,torch.cat([fadd1,g],dim=1).shape)
+        fadd = self.mlp3(torch.cat([fadd1,g],dim=1)).unsqueeze(dim=1)
+        print(torch.cat([fconn1,g],dim=1).shape)
+
+        fconn = self.mlp4(torch.cat([fconn1,g],dim=1)).unsqueeze(dim=1)
+        fterm = self.mlpt(g)
+        #print("global readout shapes ",fadd.shape,fconn.shape,fterm.shape)
+        #cat = torch.cat((fadd.squeeze(dim=0), fconn.squeeze(dim=0), fterm), dim=2)
+        cat = [fadd.squeeze(dim=0),fconn.squeeze(dim=0),fterm]
+        return cat
+        #apd = self.Softmax()....from original code its removed
+
+    
+            
+"""
