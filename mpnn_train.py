@@ -1,6 +1,5 @@
 import torch
 from collections import namedtuple
-from graphinvent import gnn
 
 
 class MLP(torch.nn.Module):
